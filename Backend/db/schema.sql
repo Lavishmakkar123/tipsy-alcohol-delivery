@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS users (
   id CHAR(36) PRIMARY KEY,
   email VARCHAR(255) NOT NULL UNIQUE,
   password_hash VARCHAR(255) NULL,
+  loyalty_points INT NOT NULL DEFAULT 0,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -11,7 +12,8 @@ CREATE TABLE IF NOT EXISTS products (
   category VARCHAR(32) NOT NULL,
   price DECIMAL(10, 2) NOT NULL,
   size VARCHAR(64) NOT NULL,
-  description TEXT NOT NULL
+  description TEXT NOT NULL,
+  KEY idx_products_category (category)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS orders (
@@ -21,6 +23,7 @@ CREATE TABLE IF NOT EXISTS orders (
   total DECIMAL(10, 2) NOT NULL,
   status VARCHAR(32) NOT NULL DEFAULT 'placed',
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  KEY idx_orders_user_id (user_id),
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -32,10 +35,16 @@ CREATE TABLE IF NOT EXISTS order_items (
   unit_price DECIMAL(10, 2) NOT NULL,
   quantity INT NOT NULL,
   line_total DECIMAL(10, 2) NOT NULL,
+  KEY idx_order_items_order_id (order_id),
   FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
   FOREIGN KEY (product_id) REFERENCES products(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE INDEX idx_orders_user_id ON orders(user_id);
-CREATE INDEX idx_order_items_order_id ON order_items(order_id);
-CREATE INDEX idx_products_category ON products(category);
+CREATE TABLE IF NOT EXISTS wishlist_items (
+  user_id CHAR(36) NOT NULL,
+  product_id VARCHAR(64) NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (user_id, product_id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

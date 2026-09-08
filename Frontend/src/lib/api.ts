@@ -13,7 +13,16 @@ interface Order {
 
 interface AuthResponse {
   token: string
-  user: { id: string; email: string }
+  user: { id: string; email: string; loyaltyPoints: number }
+}
+
+interface ApiProduct {
+  id: string
+  name: string
+  category: string
+  price: number
+  size: string
+  description: string
 }
 
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
@@ -70,4 +79,16 @@ export function socialLogin(email: string) {
     method: "POST",
     body: JSON.stringify({ email }),
   })
+}
+
+export function getWishlist() {
+  return request<ApiProduct[]>("/api/wishlist")
+}
+
+export function addToWishlist(productId: string) {
+  return request<void>(`/api/wishlist/${productId}`, { method: "POST" })
+}
+
+export function removeFromWishlist(productId: string) {
+  return request<void>(`/api/wishlist/${productId}`, { method: "DELETE" })
 }

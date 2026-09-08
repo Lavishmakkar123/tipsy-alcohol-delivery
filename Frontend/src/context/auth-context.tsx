@@ -5,6 +5,7 @@ import { login as loginApi, register as registerApi, socialLogin as socialLoginA
 interface User {
   id: string
   email: string
+  loyaltyPoints: number
 }
 
 interface AuthContextValue {

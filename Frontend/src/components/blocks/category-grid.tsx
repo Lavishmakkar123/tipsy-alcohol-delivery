@@ -14,7 +14,7 @@ export function CategoryGrid() {
             to={`/shop?category=${id}`}
             className="flex flex-col items-center gap-3 rounded-lg border p-6 text-center transition hover:-translate-y-0.5 hover:bg-accent hover:shadow-md"
           >
-            <Icon className="size-8 text-amber-700 dark:text-amber-400" />
+            <Icon className="size-8 text-primary" />
             <span className="text-sm font-medium">{label}</span>
           </Link>
         ))}

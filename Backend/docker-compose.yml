@@ -7,11 +7,11 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
     ports:
-      - "3306:3306"
+      - '3306:3306'
     volumes:
       - tipsy-mysql-data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-proot']
       interval: 5s
       timeout: 5s
       retries: 10

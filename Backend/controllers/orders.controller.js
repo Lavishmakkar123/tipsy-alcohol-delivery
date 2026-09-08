@@ -1,16 +1,13 @@
 const ordersService = require('../services/orders.service');
 const paymentsService = require('../services/payments.service');
+const usersService = require('../services/users.service');
 
 function isValidItems(items) {
   return (
     Array.isArray(items) &&
     items.length > 0 &&
     items.every(
-      (item) =>
-        item &&
-        typeof item.productId === 'string' &&
-        Number.isInteger(item.quantity) &&
-        item.quantity > 0
+      (item) => item && typeof item.productId === 'string' && Number.isInteger(item.quantity) && item.quantity > 0
     )
   );
 }
@@ -92,6 +89,9 @@ async function confirmPayment(req, res) {
       return res.status(400).json({ error: `Payment not completed (status: ${intent.status})` });
     }
     const paid = await ordersService.markOrderPaid(order.id);
+    if (paid.userId) {
+      await usersService.awardPoints(paid.userId, paid.total);
+    }
     res.json(paid);
   } catch (err) {
     res.status(err.status || 500).json({ error: err.message || 'Failed to confirm payment' });

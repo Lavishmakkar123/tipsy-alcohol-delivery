@@ -112,6 +112,14 @@ export const PRODUCTS: Product[] = [
     description: "Juniper-forward with bright botanicals and a crisp finish.",
   },
   {
+    id: "spirits-reserve-blended-scotch",
+    name: "Reserve Blended Scotch",
+    category: "spirits",
+    price: 89.99,
+    size: "750ml",
+    description: "A premium blend aged for depth — dried fruit and oak on a long, warm finish.",
+  },
+  {
     id: "cider-citrus-hard-seltzer",
     name: "Citrus Hard Seltzer",
     category: "cider",

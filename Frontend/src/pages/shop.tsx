@@ -8,7 +8,7 @@ import type { ProductCategory } from "@/lib/types"
 
 export default function Shop() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [search, setSearch] = useState("")
+  const [search, setSearch] = useState(searchParams.get("q") ?? "")
 
   const activeCategory = searchParams.get("category") as ProductCategory | null
 

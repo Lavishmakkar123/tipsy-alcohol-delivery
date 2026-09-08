@@ -1,0 +1,5 @@
+.DS_Store
+
+# Personal overrides — see .claude/CLAUDE.md for the team-shared config
+.claude/settings.local.json
+.claude/CLAUDE.local.md

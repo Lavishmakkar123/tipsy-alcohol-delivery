@@ -19,7 +19,7 @@ export function DeliveryHighlight() {
             to={`/shop?category=${category}`}
             className="flex items-center gap-3 rounded-lg border bg-card p-4 transition hover:-translate-y-0.5 hover:bg-accent hover:shadow-md"
           >
-            <Icon className="size-6 text-amber-700 dark:text-amber-400" />
+            <Icon className="size-6 text-primary" />
             <span className="flex-1 text-sm font-medium">{label}</span>
             <ArrowRight className="size-4 text-muted-foreground" />
           </Link>

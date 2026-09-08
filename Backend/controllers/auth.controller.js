@@ -21,7 +21,9 @@ async function register(req, res) {
   }
 
   const user = await usersService.createUser(email, password);
-  res.status(201).json({ token: signToken(user), user: { id: user.id, email: user.email } });
+  res
+    .status(201)
+    .json({ token: signToken(user), user: { id: user.id, email: user.email, loyaltyPoints: user.loyaltyPoints } });
 }
 
 async function login(req, res) {
@@ -35,7 +37,7 @@ async function login(req, res) {
     return res.status(401).json({ error: 'Incorrect email or password' });
   }
 
-  res.json({ token: signToken(user), user: { id: user.id, email: user.email } });
+  res.json({ token: signToken(user), user: { id: user.id, email: user.email, loyaltyPoints: user.loyaltyPoints } });
 }
 
 /**
@@ -51,7 +53,7 @@ async function socialLogin(req, res) {
     return res.status(400).json({ error: 'A valid email is required' });
   }
   const user = await usersService.findOrCreateByEmail(email);
-  res.json({ token: signToken(user), user: { id: user.id, email: user.email } });
+  res.json({ token: signToken(user), user: { id: user.id, email: user.email, loyaltyPoints: user.loyaltyPoints } });
 }
 
 async function me(req, res) {
@@ -59,7 +61,7 @@ async function me(req, res) {
   if (!user) {
     return res.status(404).json({ error: 'User not found' });
   }
-  res.json({ id: user.id, email: user.email });
+  res.json({ id: user.id, email: user.email, loyaltyPoints: user.loyaltyPoints });
 }
 
 module.exports = { register, login, socialLogin, me };
