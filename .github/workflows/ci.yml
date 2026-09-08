@@ -95,3 +95,33 @@ jobs:
 
       - name: Audit dependencies (production, high+)
         run: npm audit --omit=dev --audit-level=high
+
+  sonarcloud:
+    name: SonarCloud
+    needs: [backend, frontend]
+    runs-on: ubuntu-latest
+    # Dependabot PRs get a read-only, scope-limited GITHUB_TOKEN that can't
+    # decorate PRs — skip rather than show a permanent red X on every bump.
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Download backend coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-coverage
+          path: Backend/coverage
+
+      - name: Download frontend coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-coverage
+          path: Frontend/coverage
+
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarqube-scan-action@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
